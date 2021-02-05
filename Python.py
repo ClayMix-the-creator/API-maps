@@ -5,8 +5,7 @@ import requests
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow
-
-map_request = "http://static-maps.yandex.ru/1.x/?ll=37.530887,55.703118&spn=0.002,0.002&l=map"
+from PyQt5.QtCore import Qt
 
 
 class Example(QMainWindow):
@@ -14,6 +13,16 @@ class Example(QMainWindow):
         super().__init__()
         uic.loadUi('map.ui', self)
         self.map_but.clicked.connect(self.find_map)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_PageUp:
+            self.scale_dsp.stepUp()
+
+        if event.key() == Qt.Key_PageDown:
+            self.scale_dsp.stepDown()
+
+        if self.line_x.text() != '' and self.line_y.text() != '' and self.scale_dsp.value() != 0:
+            self.find_map()
 
     def getImage(self):
         x = self.line_x.text()
